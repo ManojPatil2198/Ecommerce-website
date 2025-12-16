@@ -50,7 +50,7 @@ const product =[
      oldPrice:null,
      onSale:false,
      NewArrival:false,
-     category:'kids',
+     category:'Kids',
     },
     {
      id:5,
@@ -80,7 +80,7 @@ const product =[
      oldPrice:null,
      onSale:false,
      NewArrival:true,
-     category:'kids',
+     category:'Kids',
     },
     {
      id:8,
@@ -90,7 +90,7 @@ const product =[
      oldPrice:42.00,
      onSale:true,
      NewArrival:false,
-     category:'kids',
+     category:'Kids',
     },
     {
      id:9,
@@ -110,7 +110,7 @@ const product =[
      oldPrice:null,
      onSale:false,
      NewArrival:false,
-     category:'Womens',
+     category:'Kids',
     },
     {
      id:11,

@@ -2,12 +2,25 @@ import React, { useState } from 'react'
 import ProductList from './ProductList'
 import { GoHeartFill } from 'react-icons/go'
 
-const Product = () => {
+const Product = ({searchTerm,addToCart}) => {
     const categories = ['All', 'Mens', 'Womens', 'Kids', 'New Arrivals', 'On Sale']
 
     const [activeTab, setActiveTab] = useState('All')
 
-    const renderProducts = ProductList.map(product => {
+    const filteredItems = ProductList.filter(item=>{
+     const matchesCategory=  
+     ( activeTab === 'All' ) ||
+     (activeTab === 'New Arrivals' && item.NewArrival)||
+     (activeTab === 'On Sale' && item.onSale) ||
+     (activeTab === item.category)
+
+        const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()); 
+     
+        return matchesCategory && matchesSearch;
+
+    })
+
+    const renderProducts = filteredItems.map(product => {
         return (
             //card
             <div className="bg-zinc-100 p-5 border border-zinc-300 rounded-lg">
@@ -51,7 +64,7 @@ const Product = () => {
                         }
                         <span className='text-red-600 font-semibold text-lg'>${product.price.toFixed(2)}</span>
                     </div>
-                    <button className='bg-blue-600 text-white text-lg py-3 w-full rounded-lg cursor-pointer active:bg-blue-700'>Add to Cart</button>
+                    <button className='bg-blue-600 text-white text-lg py-3 w-full rounded-lg cursor-pointer active:bg-blue-700' onClick={()=>addToCart (product)}>Add to Cart</button>
                 </div>
             </div>
 
@@ -60,7 +73,7 @@ const Product = () => {
 
 
     return (
-        <section className='max-w-[1300px] mx-auto px-12 py-10'>
+        <section id='product-section' className='max-w-[1300px] mx-auto px-12 py-10'>
             {/* Tabs */}
             <div className='flex gap-3 justify-center items-center mt-8'>
                 {
@@ -80,7 +93,9 @@ const Product = () => {
             {/* Product Listing */}
             <div className='grid grid-cols-4 gap-9 mt-12'>
                 {
-                    renderProducts
+                   filteredItems.length === 0  ?
+                   <p className='text-center col-span-4 text-zinc-800 text-lg'>No product found</p>:
+                      renderProducts
                 }
             </div>
         </section>
