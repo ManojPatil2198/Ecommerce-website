@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ProductList from './ProductList'
 import { GoHeartFill } from 'react-icons/go'
 
-const Product = ({searchTerm,addToCart}) => {
+const Product = ({searchTerm,addToCart,addToWishlist,wishlist}) => {
     const categories = ['All', 'Mens', 'Womens', 'Kids', 'New Arrivals', 'On Sale']
 
     const [activeTab, setActiveTab] = useState('All')
@@ -23,9 +23,13 @@ const Product = ({searchTerm,addToCart}) => {
     const renderProducts = filteredItems.map(product => {
         return (
             //card
-            <div className="bg-zinc-100 p-5 border border-zinc-300 rounded-lg">
+            <div key={product.id} className="bg-zinc-100 p-5 border border-zinc-300 rounded-lg">
                 <div className='flex justify-between items-center'>
-                    <button className='text-3xl text-zinc-300'>
+                    <button className={`text-3xl cursor-pointer
+                      ${wishlist.some(item=> item.id === product.id) ?
+                       'text-red-600' : 'text-zinc-300'
+                      }`}
+                     onClick={()=>addToWishlist(product)}>
                         <GoHeartFill />
                     </button>
                     <div>

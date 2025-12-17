@@ -3,8 +3,9 @@ import Logo from "../../assets/logo.png";
 import { IoSearch } from "react-icons/io5";
 import { GoHeartFill } from "react-icons/go";
 import { HiShoppingBag } from "react-icons/hi2";
+import Wishlist from "../Wishlist/Wishlist";
 
-const Navbar = ({handleScroll,setSearchTerm,isScrolled,handlePanel}) => {
+const Navbar = ({ handleScroll, setSearchTerm, isScrolled, handlePanel, totalItems, wishlist }) => {
 
   return (
     <header className={`bg-white fixed top-0 left-0 right-0 z-30 ${isScrolled ? 'shadow-lg' : ''}`}>
@@ -28,7 +29,7 @@ const Navbar = ({handleScroll,setSearchTerm,isScrolled,handlePanel}) => {
               autoComplete="off"
               className="h-[5vh] pl-4 bg-transparent outline-none"
               onFocus={handleScroll}
-              onChange={(e)=>setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button className="text-xl px-2">
               <IoSearch />
@@ -36,14 +37,24 @@ const Navbar = ({handleScroll,setSearchTerm,isScrolled,handlePanel}) => {
           </div>
 
           {/* Icons */}
-          <button className="text-[1.7rem] text-zinc-800 relative cursor-pointer" onClick={()=>handlePanel('wishlist')}>
+          <button className="text-[1.7rem] text-zinc-800 relative cursor-pointer" onClick={() => handlePanel('wishlist')}>
             <GoHeartFill />
-            <span className="flex bg-red-600 justify-center items-center  text-white w-5 h-5 rounded-full text-[14px] absolute top-4 right-3 border-2 border-white">1</span>
+            {
+              wishlist.length > 0 &&
+              <span className="flex bg-red-600 justify-center items-center  text-white w-5 h-5 rounded-full text-[14px] absolute top-4 right-3 border-2 border-white">
+                {wishlist.length}
+              </span>
+            }
           </button>
 
-          <button className="text-[1.7rem] text-zinc-800 relative cursor-pointer" onClick={()=>handlePanel('cart')}>
+          <button className="text-[1.7rem] text-zinc-800 relative cursor-pointer" onClick={() => handlePanel('cart')}>
             <HiShoppingBag />
-            <span className="flex bg-red-600 justify-center items-center  text-white w-5 h-5 rounded-full text-[14px] absolute top-4 right-4 border-2 border-white">1</span>
+            {
+              totalItems > 0 && <span className="flex bg-red-600 justify-center items-center  text-white w-5 h-5 rounded-full text-[14px] absolute top-4 right-4 border-2 border-white">
+                {totalItems}
+              </span>
+            }
+
           </button>
         </div>
       </nav>

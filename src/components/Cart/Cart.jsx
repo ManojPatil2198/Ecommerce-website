@@ -2,7 +2,8 @@ import React from 'react'
 import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa'
 import product from '../Products/ProductList'
 
-const Cart = ({ activePanel, handleClose, cart }) => {
+const Cart = ({ activePanel, handleClose, cart,removeItem,quantityIncrement,
+   quantityDecrement,subtotal,shippingFee,orderTotal,setOrderSummary}) => {
    return (
       <div
          className={`flex flex-col justify-between gap-5 bg-zinc-100 fixed top-0 right-0 bottom-0 z-40 left-auto w-[350px] border-l border-zinc-300 py-7 transform transition-transform duration-300 
@@ -17,7 +18,10 @@ const Cart = ({ activePanel, handleClose, cart }) => {
 
          {/* cart items */}
          <div className='flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide'>
-            {
+           {
+               cart.length === 0 ?
+               (<p className='text-zinc-800 text-center'>Your cart is empty.</p>):
+                (
                cart.map((product, index) => {
 
                   return (
@@ -37,7 +41,8 @@ const Cart = ({ activePanel, handleClose, cart }) => {
                               <h4 className='font-semibold text-zinc-800 text-lg'>
                                  {product.name}
                               </h4>
-                              <button className='w-8 h-8 bg-red-600 rounded-full text-white flex justify-center items-center mr-[27px]'>
+                              <button className='w-8 h-8 bg-red-600 rounded-full text-white flex justify-center items-center mr-[27px] cursor-pointer active:bg-red-700'
+                               onClick={()=>removeItem(product)}>
                                  <FaTrash />
                               </button>
                            </div>
@@ -51,11 +56,13 @@ const Cart = ({ activePanel, handleClose, cart }) => {
                                  }
                                  <span className='text-red-600 font-semibold text-lg'>${product.price.toFixed(2)}</span>
                               </div>                              <div className='flex gap-2'>
-                                 <button className='w-7 h-7 bg-blue-600 rounded-full text-white flex justify-center items-center text-[14px] cursor-pointer active:bg-blue-700'>
+                                 <button className='w-7 h-7 bg-blue-600 rounded-full text-white flex justify-center items-center text-[14px] cursor-pointer active:bg-blue-700'
+                                 onClick={()=>quantityDecrement(product)}>
                                     <FaMinus />
                                  </button>
-                                 <span>1</span>
-                                 <button className='w-7 h-7 bg-blue-600 rounded-full text-white flex justify-center items-center text-[14px] cursor-pointer active:bg-blue-700'>
+                                 <span>{product.quantity}</span>
+                                 <button className='w-7 h-7 bg-blue-600 rounded-full text-white flex justify-center items-center text-[14px] cursor-pointer active:bg-blue-700'
+                                  onClick={()=>quantityIncrement(product)}>
                                     <FaPlus />
                                  </button>
                               </div>
@@ -65,7 +72,9 @@ const Cart = ({ activePanel, handleClose, cart }) => {
                      </div>
                   )
                })
-            }
+                )
+
+           }
 
          </div>
 
@@ -73,15 +82,15 @@ const Cart = ({ activePanel, handleClose, cart }) => {
          <div className='px-10 border-y border-zinc-300'>
             <div className='flex justify-between pt-2'>
                <span className='text-zinc-800'>Subtotal</span>
-               <span className='text-zinc-800'>$0.00</span>
+               <span className='text-zinc-800'>${subtotal.toFixed(2)}</span>
             </div>
             <div className='flex justify-between py-2'>
                <span className='text-zinc-800'>Shipping & Handling</span>
-               <span className='text-zinc-800'>$0.00</span>
+               <span className='text-zinc-800'>${shippingFee.toFixed(2)}</span>
             </div>
             <div className='flex justify-between py-2 border-t border-zinc-300'>
                <span className='text-lg text-blue-600 font-bold'>Order Total</span>
-               <span className='text-lg text-blue-600 font-bold'>$0.00</span>
+               <span className='text-lg text-blue-600 font-bold'>${orderTotal.toFixed(2)}</span>
             </div>
          </div>
 
@@ -90,7 +99,9 @@ const Cart = ({ activePanel, handleClose, cart }) => {
             <button className='bg-blue-600 text-white flex-1 h-[7vh] cursor-pointer active:bg-blue-700' onClick={handleClose}>
                Close
             </button>
-            <button className='bg-blue-600 text-white flex-1 h-[7vh] cursor-pointer active:bg-blue-700'>
+            <button className={`text-white flex-1 h-[7vh] active:bg-blue-700
+              ${cart.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 cursor-pointer'}`}
+                disabled ={cart.length === 0} onClick={()=>setOrderSummary(true)}>
                Checkout
             </button>
          </div>
